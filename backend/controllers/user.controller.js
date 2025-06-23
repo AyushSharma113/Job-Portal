@@ -1,5 +1,6 @@
 import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
   try {
@@ -22,12 +23,17 @@ export const register = async (req, res) => {
     // hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new User({
+    await User.create({
       fullname,
       email,
-      password: hashedPassword,
       phoneNumber,
+      password: hashedPassword,
       role,
+      profile: {},
+    });
+    return res.status(201).json({
+      message: "Account created successfully.",
+      success: true,
     });
   } catch (err) {
     console.error("Error in register controller:", err);
@@ -57,7 +63,7 @@ export const Login = async (req, res) => {
 
     // check if the password matches
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordMatch) {
+    if (!isPasswordValid) {
       return res.status(400).json({
         message: "Incorrect email or password.",
         success: false,
@@ -121,16 +127,20 @@ export const updateProfile = async (req, res) => {
   try {
     const { fullname, email, phoneNumber, bio, skills } = req.body;
 
-    // here will be claudinary upload logic
+    console.log(fullname, email, phoneNumber, bio, skills);
+
+    // cloudinary ayega idhar
+    // const fileUri = getDataUri(file);
+    // const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
 
     let skillsArray;
     if (skills) {
       skillsArray = skills.split(",");
     }
-
     const userId = req.id; // middleware authentication
     let user = await User.findById(userId);
 
+    console.log("user");
     if (!user) {
       return res.status(400).json({
         message: "User not found.",
@@ -141,10 +151,13 @@ export const updateProfile = async (req, res) => {
     if (fullname) user.fullname = fullname;
     if (email) user.email = email;
     if (phoneNumber) user.phoneNumber = phoneNumber;
-    if (bio) user.profile.bio = bio;
+    // if (bio) user.profile.bio = bio;
     if (skills) user.profile.skills = skillsArray;
 
+    // resume comes later here...
+
     await user.save();
+
     user = {
       _id: user._id,
       fullname: user.fullname,
