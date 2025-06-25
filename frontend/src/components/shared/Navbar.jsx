@@ -4,8 +4,12 @@ import { Button } from "../ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { LogOut, User2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 const Navbar = () => {
-  const user = false;
+  // const user = false;
+
+  const { user } = useSelector((store) => store.auth);
+  console.log(user);
 
   return (
     <div>
@@ -54,7 +58,7 @@ const Navbar = () => {
                         <AvatarImage src="https://github.com/shadcn.png" />
                       </Avatar>
                       <div>
-                        <h4 className="font-medium">Ayush sharma</h4>
+                        <h4 className="font-medium">{user.fullname}</h4>
                         <p className="text-sm text-muted-foreground">
                           Mern stack devloper
                         </p>
@@ -63,7 +67,9 @@ const Navbar = () => {
                     <div className="flex flex-col my-2 text-gray-600">
                       <div className="flex w-fit items-center gap-2 cursor-pointer">
                         <User2 />
-                        <Button variant="link">View Profile</Button>
+                        <Link to={"/profile"}>
+                          <Button variant="link">View Profile</Button>
+                        </Link>
                       </div>
 
                       <div className="flex w-fit items-center gap-2 cursor-pointer">

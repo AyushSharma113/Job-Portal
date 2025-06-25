@@ -6,6 +6,9 @@ import { Badge } from "./ui/badge";
 import { useNavigate } from "react-router-dom";
 
 const Job = ({ job }) => {
+  const id = "djfeofffee";
+  const navigate = useNavigate();
+
   return (
     <div className="p-5 rounded-md shadow-xl bg-white border border-gray-100">
       <div className="flex items-center justify-between">
@@ -44,7 +47,7 @@ const Job = ({ job }) => {
       </div>
       <div className="flex items-center gap-4 mt-4">
         <Button
-          //   onClick={() => navigate(`/description/${job?._id}`)}
+          onClick={() => navigate(`/description/${id}`)}
           variant="outline"
         >
           Details

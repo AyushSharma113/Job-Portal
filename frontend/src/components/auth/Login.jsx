@@ -9,7 +9,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { USER_API_END_POINT } from "../../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "../../redux/authSlice";
+import { setLoading, setUser } from "../../redux/authSlice";
 import { Loader2 } from "lucide-react";
 
 const Signup = () => {
@@ -49,6 +49,7 @@ const Signup = () => {
       if (res.data.success) {
         navigate("/");
         toast.success(res.data.message);
+        dispatch(setUser(res.data.user));
       }
     } catch (error) {
       console.log("Error submitting form:", error);
