@@ -8,6 +8,9 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
 import { USER_API_END_POINT } from "../../utils/constant";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "../../redux/authSlice";
+import { Loader2 } from "lucide-react";
 
 const Signup = () => {
   const [input, setInput] = useState({
@@ -16,7 +19,9 @@ const Signup = () => {
     role: "",
   });
 
+  const { loading } = useSelector((store) => store.auth);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -35,6 +40,7 @@ const Signup = () => {
     formData.append("role", input.role);
 
     try {
+      dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/login`, formData, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
@@ -46,6 +52,8 @@ const Signup = () => {
       }
     } catch (error) {
       console.log("Error submitting form:", error);
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -106,16 +114,17 @@ const Signup = () => {
               </div>
             </RadioGroup>
           </div>
-          {/* {loading ? (
-            <Button className="w-full my-4">
-              {" "}
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait{" "}
+          {loading ? (
+            <Button type="submit" className="w-full my-4">
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Please wait
             </Button>
-          ) : ( */}
-          <Button type="submit" className="w-full my-4">
-            Login
-          </Button>
-          {/* )} */}
+          ) : (
+            <Button type="submit" className="w-full my-4">
+              Login
+            </Button>
+          )}
+
           <span className="text-sm">
             Den't have an account?{" "}
             <Link to="/signup" className="text-blue-600">
