@@ -9,7 +9,7 @@ const Navbar = () => {
   // const user = false;
 
   const { user } = useSelector((store) => store.auth);
-  console.log(user);
+  // console.log(user);
 
   return (
     <div>

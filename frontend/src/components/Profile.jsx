@@ -7,11 +7,13 @@ import { Badge } from "./ui/badge";
 import { Label } from "./ui/label";
 import { useSelector } from "react-redux";
 import AppliedJobTable from "./AppliedJobTable";
+import UpdateProfileDialog from "./UpdateProfileDialog";
 
 const skills = ["Html", "Css", "Javascript", "Reactjs"];
 const isResume = true;
 
 const Profile = () => {
+  const [open, setOpen] = useState(false);
   const { user } = useSelector((store) => store.auth);
 
   return (
@@ -35,7 +37,7 @@ const Profile = () => {
             </div>
           </div>
           <Button
-            // onClick={() => setOpen(true)}
+            onClick={() => setOpen(true)}
             className="text-right"
             variant="outline"
           >
@@ -82,6 +84,7 @@ const Profile = () => {
         {/* Applied Job Table   */}
         <AppliedJobTable />
       </div>
+      <UpdateProfileDialog open={open} setOpen={setOpen} />
     </div>
   );
 };
