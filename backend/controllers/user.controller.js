@@ -1,6 +1,8 @@
 import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import getDataUri from "../utils/dataUri.js";
+import cloudinary from "../utils/cloudinary.js";
 
 export const register = async (req, res) => {
   try {
@@ -129,9 +131,13 @@ export const updateProfile = async (req, res) => {
 
     console.log(fullname, email, phoneNumber, bio, skills);
 
-    // cloudinary ayega idhar
-    // const fileUri = getDataUri(file);
-    // const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+    const file = req.file;
+
+    const fileUri = getDataUri(file);
+
+    console.log("file: ", fileUri);
+
+    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
 
     let skillsArray;
     if (skills) {
@@ -140,7 +146,6 @@ export const updateProfile = async (req, res) => {
     const userId = req.id; // middleware authentication
     let user = await User.findById(userId);
 
-    console.log("user");
     if (!user) {
       return res.status(400).json({
         message: "User not found.",
@@ -151,10 +156,12 @@ export const updateProfile = async (req, res) => {
     if (fullname) user.fullname = fullname;
     if (email) user.email = email;
     if (phoneNumber) user.phoneNumber = phoneNumber;
-    // if (bio) user.profile.bio = bio;
+    if (bio) user.profile.bio = bio;
     if (skills) user.profile.skills = skillsArray;
-
-    // resume comes later here...
+    if (cloudResponse) {
+      user.profile.resume = cloudResponse.secure_url;
+      user.profile.resumeOriginalName = file.originalname;
+    }
 
     await user.save();
 

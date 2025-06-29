@@ -13,11 +13,11 @@ import { Input } from "./ui/input";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { USER_API_END_POINT } from "../utils/constant";
-import { setLoading } from "../redux/authSlice";
+import { setLoading, setUser } from "../redux/authSlice";
 import { toast } from "sonner";
 
 const UpdateProfileDialog = ({ open, setOpen }) => {
-  //   const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const { user, loading } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
 
@@ -34,12 +34,12 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
   const fileChangeHandler = (e) => {
-    const file = e.target.file?.[0];
+    const file = e.target.files?.[0];
     setInput({ ...input, file });
     // console.log(file);
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     // console.log(input);
 
@@ -58,21 +58,27 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     }
 
     try {
-      const res = axios.post(`${USER_API_END_POINT}/profile/update`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: true,
-      });
+      dispatch(setLoading(true));
+      const res = await axios.post(
+        `${USER_API_END_POINT}/profile/update`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
       if (res.data.success) {
-        dispatch(setUser(res.data.user));
+        //  navigate("/");
         toast.success(res.data.message);
+        dispatch(setUser(res.data.user));
+        setOpen(false);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.message);
+      console.log("Error updating form:", error);
     } finally {
-      setLoading(false);
+      dispatch(setLoading(false));
     }
   };
 
@@ -120,7 +126,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                 </Label>
                 <Input
                   id="number"
-                  name="number"
+                  name="phoneNumber"
                   value={input.phoneNumber}
                   onChange={changeEventHandler}
                   className="col-span-3"
