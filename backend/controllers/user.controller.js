@@ -12,6 +12,13 @@ export const register = async (req, res) => {
         .status(400)
         .json({ message: "Something is missing", success: false });
     }
+    console.log(fullname, email, password, phoneNumber, role);
+    const file = req.file;
+    const fileUri = getDataUri(file);
+
+    console.log("file: ", fileUri);
+
+    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
 
     const user = await User.findOne({ email });
 
@@ -31,7 +38,7 @@ export const register = async (req, res) => {
       phoneNumber,
       password: hashedPassword,
       role,
-      profile: {},
+      profile: { profilePhoto: cloudResponse.secure_url },
     });
     return res.status(201).json({
       message: "Account created successfully.",

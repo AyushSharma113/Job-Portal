@@ -26,7 +26,7 @@ const Navbar = () => {
       if (res.data.success) {
         dispatch(setUser(null));
         navigate("/");
-        toast.success("res.data.message");
+        toast.success(res.data.message);
       }
     } catch (error) {
       console.log(error);
@@ -70,19 +70,31 @@ const Navbar = () => {
               <Popover>
                 <PopoverTrigger asChild>
                   <Avatar className="cursor-pointer">
-                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarImage
+                      src={
+                        user?.profile?.profilePhoto
+                          ? user?.profile?.profilePhoto
+                          : "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"
+                      }
+                    />
                   </Avatar>
                 </PopoverTrigger>
                 <PopoverContent className="w-80">
                   <div className="">
                     <div className="flex gap-2 space-y-2">
                       <Avatar>
-                        <AvatarImage src="https://github.com/shadcn.png" />
+                        <AvatarImage
+                          src={
+                            user?.profile?.profilePhoto
+                              ? user?.profile?.profilePhoto
+                              : "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"
+                          }
+                        />
                       </Avatar>
                       <div>
                         <h4 className="font-medium">{user.fullname}</h4>
                         <p className="text-sm text-muted-foreground">
-                          Mern stack devloper
+                          {user.role}
                         </p>
                       </div>
                     </div>

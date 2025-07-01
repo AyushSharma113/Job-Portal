@@ -4,10 +4,12 @@ import HeroSection from "./HeroSection";
 import CategoryCarousal from "./CategoryCarousal";
 import LatestJobs from "./LatestJobs";
 import Footer from "./shared/Footer";
+import useGetAllJobs from "../hooks/useGetAllJobs";
 
 const Home = () => {
   return (
     <div>
+      {useGetAllJobs()}
       <Navbar />
       <HeroSection />
       <CategoryCarousal />

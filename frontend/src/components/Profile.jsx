@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 import AppliedJobTable from "./AppliedJobTable";
 import UpdateProfileDialog from "./UpdateProfileDialog";
 
-const skills = ["Html", "Css", "Javascript", "Reactjs"];
 const isResume = true;
 
 const Profile = () => {

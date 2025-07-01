@@ -2,9 +2,12 @@
   "files": [],
   "references": [],
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "src",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "include": ["src"],
+    "jsx": "react-jsx",
+    "checkJs": true
   }
 }
