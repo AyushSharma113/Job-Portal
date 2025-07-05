@@ -7,9 +7,9 @@ import Footer from "./shared/Footer";
 import useGetAllJobs from "../hooks/useGetAllJobs";
 
 const Home = () => {
+  useGetAllJobs();
   return (
     <div>
-      {useGetAllJobs()}
       <Navbar />
       <HeroSection />
       <CategoryCarousal />
