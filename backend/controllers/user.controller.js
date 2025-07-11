@@ -12,11 +12,11 @@ export const register = async (req, res) => {
         .status(400)
         .json({ message: "Something is missing", success: false });
     }
-    console.log(fullname, email, password, phoneNumber, role);
+    // console.log(fullname, email, password, phoneNumber, role);
     const file = req.file;
     const fileUri = getDataUri(file);
 
-    console.log("file: ", fileUri);
+    // console.log("file: ", fileUri);
 
     const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
 
