@@ -5,12 +5,18 @@ import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import CompaniesTable from "./CompaniesTable";
+import useGetAllCompanies from "../../hooks/useGetCompanies";
+import { useEffect } from "react";
+import { setSearchCompanyByText } from "../../redux/companySlice";
 
 const Companies = () => {
   const [input, setInput] = useState("");
   const navigate = useNavigate();
-  //   const dispatch = useDispatch();
-
+  useGetAllCompanies();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setSearchCompanyByText(input));
+  }, [input]);
   return (
     <div>
       <Navbar />
