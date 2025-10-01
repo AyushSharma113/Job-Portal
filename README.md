@@ -139,9 +139,3 @@ npm run dev
 * Open for collaboration!
 
 ---
-
-
-## 🌍 Live Demo
-
-> Coming Soon... 
-```
